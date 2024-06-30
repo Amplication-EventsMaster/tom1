@@ -1,5 +1,5 @@
 datasource db {
-  provider = "mongodb"
+  provider = "mysql"
   url      = env("DB_URL")
 }
 
@@ -11,7 +11,7 @@ model User {
   createdAt DateTime @default(now())
   email     String?  @unique
   firstName String?
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(cuid())
   lastName  String?
   password  String
   roles     Json
@@ -23,7 +23,7 @@ model Customer {
   createdAt DateTime @default(now())
   events    Event[]
   firstName String?
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        String   @id @default(cuid())
   lastName  String?
   phn       String?
   updatedAt DateTime @updatedAt
@@ -32,8 +32,8 @@ model Customer {
 model Event {
   createdAt  DateTime  @default(now())
   customer   Customer? @relation(fields: [customerId], references: [id])
-  customerId String?   @db.ObjectId
+  customerId String?
   date       DateTime?
-  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  id         String    @id @default(cuid())
   updatedAt  DateTime  @updatedAt
 }
