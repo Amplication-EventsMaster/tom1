@@ -1,8 +1,8 @@
 namespace NotificationService.APIs.Dtos;
 
-public class NotificationTypeCreateInput
+public class NotificationType
 {
-    public string? Id { get; set; }
+    public string Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -12,5 +12,5 @@ public class NotificationTypeCreateInput
 
     public string? Description { get; set; }
 
-    public List<Notification>? Notifications { get; set; }
+    public List<string>? Notifications { get; set; }
 }

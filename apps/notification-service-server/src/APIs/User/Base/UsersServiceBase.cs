@@ -21,18 +21,18 @@ public abstract class UsersServiceBase : IUsersService
     /// <summary>
     /// Create one User
     /// </summary>
-    public async Task<UserDto> CreateUser(UserCreateInput createDto)
+    public async Task<User> CreateUser(UserCreateInput createDto)
     {
-        var user = new User
+        var user = new UserDbModel
         {
             CreatedAt = createDto.CreatedAt,
-            Email = createDto.Email,
+            UpdatedAt = createDto.UpdatedAt,
             FirstName = createDto.FirstName,
             LastName = createDto.LastName,
+            Username = createDto.Username,
+            Email = createDto.Email,
             Password = createDto.Password,
-            Roles = createDto.Roles,
-            UpdatedAt = createDto.UpdatedAt,
-            Username = createDto.Username
+            Roles = createDto.Roles
         };
 
         if (createDto.Id != null)
@@ -51,7 +51,7 @@ public abstract class UsersServiceBase : IUsersService
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        var result = await _context.FindAsync<User>(user.Id);
+        var result = await _context.FindAsync<UserDbModel>(user.Id);
 
         if (result == null)
         {
@@ -64,9 +64,9 @@ public abstract class UsersServiceBase : IUsersService
     /// <summary>
     /// Delete one User
     /// </summary>
-    public async Task DeleteUser(UserIdDto idDto)
+    public async Task DeleteUser(UserWhereUniqueInput uniqueId)
     {
-        var user = await _context.Users.FindAsync(idDto.Id);
+        var user = await _context.Users.FindAsync(uniqueId.Id);
         if (user == null)
         {
             throw new NotFoundException();
@@ -79,7 +79,7 @@ public abstract class UsersServiceBase : IUsersService
     /// <summary>
     /// Find many Users
     /// </summary>
-    public async Task<List<UserDto>> Users(UserFindMany findManyArgs)
+    public async Task<List<User>> Users(UserFindManyArgs findManyArgs)
     {
         var users = await _context
             .Users.Include(x => x.UserNotifications)
@@ -94,10 +94,10 @@ public abstract class UsersServiceBase : IUsersService
     /// <summary>
     /// Get one User
     /// </summary>
-    public async Task<UserDto> User(UserIdDto idDto)
+    public async Task<User> User(UserWhereUniqueInput uniqueId)
     {
         var users = await this.Users(
-            new UserFindMany { Where = new UserWhereInput { Id = idDto.Id } }
+            new UserFindManyArgs { Where = new UserWhereInput { Id = uniqueId.Id } }
         );
         var user = users.FirstOrDefault();
         if (user == null)
@@ -111,15 +111,15 @@ public abstract class UsersServiceBase : IUsersService
     /// <summary>
     /// Update one User
     /// </summary>
-    public async Task UpdateUser(UserIdDto idDto, UserUpdateInput updateDto)
+    public async Task UpdateUser(UserWhereUniqueInput uniqueId, UserUpdateInput updateDto)
     {
-        var user = updateDto.ToModel(idDto);
+        var user = updateDto.ToModel(uniqueId);
 
         if (updateDto.UserNotifications != null)
         {
             user.UserNotifications = await _context
                 .UserNotifications.Where(userNotification =>
-                    updateDto.UserNotifications.Select(t => t.Id).Contains(userNotification.Id)
+                    updateDto.UserNotifications.Select(t => t).Contains(userNotification.Id)
                 )
                 .ToListAsync();
         }
@@ -147,13 +147,13 @@ public abstract class UsersServiceBase : IUsersService
     /// Connect multiple UserNotifications records to User
     /// </summary>
     public async Task ConnectUserNotifications(
-        UserIdDto idDto,
-        UserNotificationIdDto[] userNotificationsId
+        UserWhereUniqueInput uniqueId,
+        UserNotificationWhereUniqueInput[] userNotificationsId
     )
     {
         var user = await _context
             .Users.Include(x => x.UserNotifications)
-            .FirstOrDefaultAsync(x => x.Id == idDto.Id);
+            .FirstOrDefaultAsync(x => x.Id == uniqueId.Id);
         if (user == null)
         {
             throw new NotFoundException();
@@ -181,13 +181,13 @@ public abstract class UsersServiceBase : IUsersService
     /// Disconnect multiple UserNotifications records from User
     /// </summary>
     public async Task DisconnectUserNotifications(
-        UserIdDto idDto,
-        UserNotificationIdDto[] userNotificationsId
+        UserWhereUniqueInput uniqueId,
+        UserNotificationWhereUniqueInput[] userNotificationsId
     )
     {
         var user = await _context
             .Users.Include(x => x.UserNotifications)
-            .FirstOrDefaultAsync(x => x.Id == idDto.Id);
+            .FirstOrDefaultAsync(x => x.Id == uniqueId.Id);
         if (user == null)
         {
             throw new NotFoundException();
@@ -207,17 +207,17 @@ public abstract class UsersServiceBase : IUsersService
     /// <summary>
     /// Find multiple UserNotifications records for User
     /// </summary>
-    public async Task<List<UserNotificationDto>> FindUserNotifications(
-        UserIdDto idDto,
-        UserNotificationFindMany userFindMany
+    public async Task<List<UserNotification>> FindUserNotifications(
+        UserWhereUniqueInput uniqueId,
+        UserNotificationFindManyArgs userFindManyArgs
     )
     {
         var userNotifications = await _context
-            .UserNotifications.Where(m => m.UserId == idDto.Id)
-            .ApplyWhere(userFindMany.Where)
-            .ApplySkip(userFindMany.Skip)
-            .ApplyTake(userFindMany.Take)
-            .ApplyOrderBy(userFindMany.SortBy)
+            .UserNotifications.Where(m => m.UserId == uniqueId.Id)
+            .ApplyWhere(userFindManyArgs.Where)
+            .ApplySkip(userFindManyArgs.Skip)
+            .ApplyTake(userFindManyArgs.Take)
+            .ApplyOrderBy(userFindManyArgs.SortBy)
             .ToListAsync();
 
         return userNotifications.Select(x => x.ToDto()).ToList();
@@ -226,7 +226,7 @@ public abstract class UsersServiceBase : IUsersService
     /// <summary>
     /// Meta data about User records
     /// </summary>
-    public async Task<MetadataDto> UsersMeta(UserFindMany findManyArgs)
+    public async Task<MetadataDto> UsersMeta(UserFindManyArgs findManyArgs)
     {
         var count = await _context.Users.ApplyWhere(findManyArgs.Where).CountAsync();
 
@@ -237,13 +237,13 @@ public abstract class UsersServiceBase : IUsersService
     /// Update multiple UserNotifications records for User
     /// </summary>
     public async Task UpdateUserNotifications(
-        UserIdDto idDto,
-        UserNotificationIdDto[] userNotificationsId
+        UserWhereUniqueInput uniqueId,
+        UserNotificationWhereUniqueInput[] userNotificationsId
     )
     {
         var user = await _context
             .Users.Include(t => t.UserNotifications)
-            .FirstOrDefaultAsync(x => x.Id == idDto.Id);
+            .FirstOrDefaultAsync(x => x.Id == uniqueId.Id);
         if (user == null)
         {
             throw new NotFoundException();

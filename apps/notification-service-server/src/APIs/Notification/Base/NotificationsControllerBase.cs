@@ -21,9 +21,7 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// Create one Notification
     /// </summary>
     [HttpPost()]
-    public async Task<ActionResult<NotificationDto>> CreateNotification(
-        NotificationCreateInput input
-    )
+    public async Task<ActionResult<Notification>> CreateNotification(NotificationCreateInput input)
     {
         var notification = await _service.CreateNotification(input);
 
@@ -34,11 +32,13 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// Delete one Notification
     /// </summary>
     [HttpDelete("{Id}")]
-    public async Task<ActionResult> DeleteNotification([FromRoute()] NotificationIdDto idDto)
+    public async Task<ActionResult> DeleteNotification(
+        [FromRoute()] NotificationWhereUniqueInput uniqueId
+    )
     {
         try
         {
-            await _service.DeleteNotification(idDto);
+            await _service.DeleteNotification(uniqueId);
         }
         catch (NotFoundException)
         {
@@ -52,8 +52,8 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// Find many Notifications
     /// </summary>
     [HttpGet()]
-    public async Task<ActionResult<List<NotificationDto>>> Notifications(
-        [FromQuery()] NotificationFindMany filter
+    public async Task<ActionResult<List<Notification>>> Notifications(
+        [FromQuery()] NotificationFindManyArgs filter
     )
     {
         return Ok(await _service.Notifications(filter));
@@ -63,13 +63,13 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// Get one Notification
     /// </summary>
     [HttpGet("{Id}")]
-    public async Task<ActionResult<NotificationDto>> Notification(
-        [FromRoute()] NotificationIdDto idDto
+    public async Task<ActionResult<Notification>> Notification(
+        [FromRoute()] NotificationWhereUniqueInput uniqueId
     )
     {
         try
         {
-            return await _service.Notification(idDto);
+            return await _service.Notification(uniqueId);
         }
         catch (NotFoundException)
         {
@@ -82,13 +82,13 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// </summary>
     [HttpPost("{Id}/userNotifications")]
     public async Task<ActionResult> ConnectUserNotifications(
-        [FromRoute()] NotificationIdDto idDto,
-        [FromQuery()] UserNotificationIdDto[] userNotificationsId
+        [FromRoute()] NotificationWhereUniqueInput uniqueId,
+        [FromQuery()] UserNotificationWhereUniqueInput[] userNotificationsId
     )
     {
         try
         {
-            await _service.ConnectUserNotifications(idDto, userNotificationsId);
+            await _service.ConnectUserNotifications(uniqueId, userNotificationsId);
         }
         catch (NotFoundException)
         {
@@ -103,13 +103,13 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// </summary>
     [HttpDelete("{Id}/userNotifications")]
     public async Task<ActionResult> DisconnectUserNotifications(
-        [FromRoute()] NotificationIdDto idDto,
-        [FromBody()] UserNotificationIdDto[] userNotificationsId
+        [FromRoute()] NotificationWhereUniqueInput uniqueId,
+        [FromBody()] UserNotificationWhereUniqueInput[] userNotificationsId
     )
     {
         try
         {
-            await _service.DisconnectUserNotifications(idDto, userNotificationsId);
+            await _service.DisconnectUserNotifications(uniqueId, userNotificationsId);
         }
         catch (NotFoundException)
         {
@@ -123,14 +123,14 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// Find multiple UserNotifications records for Notification
     /// </summary>
     [HttpGet("{Id}/userNotifications")]
-    public async Task<ActionResult<List<UserNotificationDto>>> FindUserNotifications(
-        [FromRoute()] NotificationIdDto idDto,
-        [FromQuery()] UserNotificationFindMany filter
+    public async Task<ActionResult<List<UserNotification>>> FindUserNotifications(
+        [FromRoute()] NotificationWhereUniqueInput uniqueId,
+        [FromQuery()] UserNotificationFindManyArgs filter
     )
     {
         try
         {
-            return Ok(await _service.FindUserNotifications(idDto, filter));
+            return Ok(await _service.FindUserNotifications(uniqueId, filter));
         }
         catch (NotFoundException)
         {
@@ -142,11 +142,11 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// Get a NotificationType record for Notification
     /// </summary>
     [HttpGet("{Id}/notificationTypes")]
-    public async Task<ActionResult<List<NotificationTypeDto>>> GetNotificationType(
-        [FromRoute()] NotificationIdDto idDto
+    public async Task<ActionResult<List<NotificationType>>> GetNotificationType(
+        [FromRoute()] NotificationWhereUniqueInput uniqueId
     )
     {
-        var notificationType = await _service.GetNotificationType(idDto);
+        var notificationType = await _service.GetNotificationType(uniqueId);
         return Ok(notificationType);
     }
 
@@ -155,7 +155,7 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// </summary>
     [HttpPost("meta")]
     public async Task<ActionResult<MetadataDto>> NotificationsMeta(
-        [FromQuery()] NotificationFindMany filter
+        [FromQuery()] NotificationFindManyArgs filter
     )
     {
         return Ok(await _service.NotificationsMeta(filter));
@@ -166,13 +166,13 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// </summary>
     [HttpPatch("{Id}/userNotifications")]
     public async Task<ActionResult> UpdateUserNotifications(
-        [FromRoute()] NotificationIdDto idDto,
-        [FromBody()] UserNotificationIdDto[] userNotificationsId
+        [FromRoute()] NotificationWhereUniqueInput uniqueId,
+        [FromBody()] UserNotificationWhereUniqueInput[] userNotificationsId
     )
     {
         try
         {
-            await _service.UpdateUserNotifications(idDto, userNotificationsId);
+            await _service.UpdateUserNotifications(uniqueId, userNotificationsId);
         }
         catch (NotFoundException)
         {
@@ -187,13 +187,13 @@ public abstract class NotificationsControllerBase : ControllerBase
     /// </summary>
     [HttpPatch("{Id}")]
     public async Task<ActionResult> UpdateNotification(
-        [FromRoute()] NotificationIdDto idDto,
+        [FromRoute()] NotificationWhereUniqueInput uniqueId,
         [FromQuery()] NotificationUpdateInput notificationUpdateDto
     )
     {
         try
         {
-            await _service.UpdateNotification(idDto, notificationUpdateDto);
+            await _service.UpdateNotification(uniqueId, notificationUpdateDto);
         }
         catch (NotFoundException)
         {

@@ -5,24 +5,24 @@ namespace NotificationService.APIs.Extensions;
 
 public static class UserNotificationsExtensions
 {
-    public static UserNotificationDto ToDto(this UserNotification model)
+    public static UserNotification ToDto(this UserNotificationDbModel model)
     {
-        return new UserNotificationDto
+        return new UserNotification
         {
-            CreatedAt = model.CreatedAt,
             Id = model.Id,
-            Notification = new NotificationIdDto { Id = model.NotificationId },
+            CreatedAt = model.CreatedAt,
             UpdatedAt = model.UpdatedAt,
-            User = new UserIdDto { Id = model.UserId },
+            User = model.UserId,
+            Notification = model.NotificationId,
         };
     }
 
-    public static UserNotification ToModel(
+    public static UserNotificationDbModel ToModel(
         this UserNotificationUpdateInput updateDto,
-        UserNotificationIdDto idDto
+        UserNotificationWhereUniqueInput uniqueId
     )
     {
-        var userNotification = new UserNotification { Id = idDto.Id };
+        var userNotification = new UserNotificationDbModel { Id = uniqueId.Id };
 
         // map required fields
         if (updateDto.CreatedAt != null)

@@ -2,13 +2,13 @@ namespace NotificationService.APIs.Dtos;
 
 public class UserNotificationCreateInput
 {
-    public DateTime CreatedAt { get; set; }
-
     public string? Id { get; set; }
 
-    public NotificationIdDto? Notification { get; set; }
+    public DateTime CreatedAt { get; set; }
 
     public DateTime UpdatedAt { get; set; }
 
-    public UserIdDto? User { get; set; }
+    public User? User { get; set; }
+
+    public Notification? Notification { get; set; }
 }

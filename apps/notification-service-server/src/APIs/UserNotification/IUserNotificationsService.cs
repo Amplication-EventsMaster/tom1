@@ -8,45 +8,47 @@ public interface IUserNotificationsService
     /// <summary>
     /// Create one UserNotification
     /// </summary>
-    public Task<UserNotificationDto> CreateUserNotification(
-        UserNotificationCreateInput usernotificationDto
+    public Task<UserNotification> CreateUserNotification(
+        UserNotificationCreateInput usernotification
     );
 
     /// <summary>
     /// Delete one UserNotification
     /// </summary>
-    public Task DeleteUserNotification(UserNotificationIdDto idDto);
+    public Task DeleteUserNotification(UserNotificationWhereUniqueInput uniqueId);
 
     /// <summary>
     /// Find many UserNotifications
     /// </summary>
-    public Task<List<UserNotificationDto>> UserNotifications(UserNotificationFindMany findManyArgs);
+    public Task<List<UserNotification>> UserNotifications(
+        UserNotificationFindManyArgs findManyArgs
+    );
 
     /// <summary>
     /// Get one UserNotification
     /// </summary>
-    public Task<UserNotificationDto> UserNotification(UserNotificationIdDto idDto);
+    public Task<UserNotification> UserNotification(UserNotificationWhereUniqueInput uniqueId);
 
     /// <summary>
     /// Update one UserNotification
     /// </summary>
     public Task UpdateUserNotification(
-        UserNotificationIdDto idDto,
+        UserNotificationWhereUniqueInput uniqueId,
         UserNotificationUpdateInput updateDto
     );
 
     /// <summary>
     /// Get a Notification record for UserNotification
     /// </summary>
-    public Task<NotificationDto> GetNotification(UserNotificationIdDto idDto);
+    public Task<Notification> GetNotification(UserNotificationWhereUniqueInput uniqueId);
 
     /// <summary>
     /// Get a User record for UserNotification
     /// </summary>
-    public Task<UserDto> GetUser(UserNotificationIdDto idDto);
+    public Task<User> GetUser(UserNotificationWhereUniqueInput uniqueId);
 
     /// <summary>
     /// Meta data about UserNotification records
     /// </summary>
-    public Task<MetadataDto> UserNotificationsMeta(UserNotificationFindMany findManyArgs);
+    public Task<MetadataDto> UserNotificationsMeta(UserNotificationFindManyArgs findManyArgs);
 }

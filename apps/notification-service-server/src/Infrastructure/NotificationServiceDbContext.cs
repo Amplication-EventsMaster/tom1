@@ -8,11 +8,11 @@ public class NotificationServiceDbContext : DbContext
     public NotificationServiceDbContext(DbContextOptions<NotificationServiceDbContext> options)
         : base(options) { }
 
-    public DbSet<Notification> Notifications { get; set; }
+    public DbSet<NotificationDbModel> Notifications { get; set; }
 
-    public DbSet<NotificationType> NotificationTypes { get; set; }
+    public DbSet<NotificationTypeDbModel> NotificationTypes { get; set; }
 
-    public DbSet<UserNotification> UserNotifications { get; set; }
+    public DbSet<UserNotificationDbModel> UserNotifications { get; set; }
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<UserDbModel> Users { get; set; }
 }

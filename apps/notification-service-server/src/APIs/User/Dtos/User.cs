@@ -1,8 +1,8 @@
 namespace NotificationService.APIs.Dtos;
 
-public class UserCreateInput
+public class User
 {
-    public string? Id { get; set; }
+    public string Id { get; set; }
 
     public DateTime CreatedAt { get; set; }
 
@@ -20,5 +20,5 @@ public class UserCreateInput
 
     public string Roles { get; set; }
 
-    public List<UserNotification>? UserNotifications { get; set; }
+    public List<string>? UserNotifications { get; set; }
 }

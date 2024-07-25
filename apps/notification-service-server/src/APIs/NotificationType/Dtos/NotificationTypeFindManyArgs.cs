@@ -5,5 +5,5 @@ using NotificationService.Infrastructure.Models;
 namespace NotificationService.APIs.Dtos;
 
 [BindProperties(SupportsGet = true)]
-public class UserNotificationFindMany
-    : FindManyInput<UserNotification, UserNotificationWhereInput> { }
+public class NotificationTypeFindManyArgs
+    : FindManyInput<NotificationType, NotificationTypeWhereInput> { }

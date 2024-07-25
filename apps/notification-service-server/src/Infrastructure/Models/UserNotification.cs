@@ -4,19 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NotificationService.Infrastructure.Models;
 
 [Table("UserNotifications")]
-public class UserNotification
+public class UserNotificationDbModel
 {
-    [Required()]
-    public DateTime CreatedAt { get; set; }
-
     [Key()]
     [Required()]
     public string Id { get; set; }
 
-    public string? NotificationId { get; set; }
-
-    [ForeignKey(nameof(NotificationId))]
-    public Notification? Notification { get; set; } = null;
+    [Required()]
+    public DateTime CreatedAt { get; set; }
 
     [Required()]
     public DateTime UpdatedAt { get; set; }
@@ -24,5 +19,10 @@ public class UserNotification
     public string? UserId { get; set; }
 
     [ForeignKey(nameof(UserId))]
-    public User? User { get; set; } = null;
+    public UserDbModel? User { get; set; } = null;
+
+    public string? NotificationId { get; set; }
+
+    [ForeignKey(nameof(NotificationId))]
+    public NotificationDbModel? Notification { get; set; } = null;
 }

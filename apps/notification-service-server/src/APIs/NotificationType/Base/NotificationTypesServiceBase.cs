@@ -21,16 +21,16 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// <summary>
     /// Create one NotificationType
     /// </summary>
-    public async Task<NotificationTypeDto> CreateNotificationType(
+    public async Task<NotificationType> CreateNotificationType(
         NotificationTypeCreateInput createDto
     )
     {
-        var notificationType = new NotificationType
+        var notificationType = new NotificationTypeDbModel
         {
             CreatedAt = createDto.CreatedAt,
-            Description = createDto.Description,
+            UpdatedAt = createDto.UpdatedAt,
             Name = createDto.Name,
-            UpdatedAt = createDto.UpdatedAt
+            Description = createDto.Description
         };
 
         if (createDto.Id != null)
@@ -49,7 +49,7 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
         _context.NotificationTypes.Add(notificationType);
         await _context.SaveChangesAsync();
 
-        var result = await _context.FindAsync<NotificationType>(notificationType.Id);
+        var result = await _context.FindAsync<NotificationTypeDbModel>(notificationType.Id);
 
         if (result == null)
         {
@@ -62,9 +62,9 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// <summary>
     /// Delete one NotificationType
     /// </summary>
-    public async Task DeleteNotificationType(NotificationTypeIdDto idDto)
+    public async Task DeleteNotificationType(NotificationTypeWhereUniqueInput uniqueId)
     {
-        var notificationType = await _context.NotificationTypes.FindAsync(idDto.Id);
+        var notificationType = await _context.NotificationTypes.FindAsync(uniqueId.Id);
         if (notificationType == null)
         {
             throw new NotFoundException();
@@ -77,8 +77,8 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// <summary>
     /// Find many NotificationTypes
     /// </summary>
-    public async Task<List<NotificationTypeDto>> NotificationTypes(
-        NotificationTypeFindMany findManyArgs
+    public async Task<List<NotificationType>> NotificationTypes(
+        NotificationTypeFindManyArgs findManyArgs
     )
     {
         var notificationTypes = await _context
@@ -94,12 +94,12 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// <summary>
     /// Get one NotificationType
     /// </summary>
-    public async Task<NotificationTypeDto> NotificationType(NotificationTypeIdDto idDto)
+    public async Task<NotificationType> NotificationType(NotificationTypeWhereUniqueInput uniqueId)
     {
         var notificationTypes = await this.NotificationTypes(
-            new NotificationTypeFindMany
+            new NotificationTypeFindManyArgs
             {
-                Where = new NotificationTypeWhereInput { Id = idDto.Id }
+                Where = new NotificationTypeWhereInput { Id = uniqueId.Id }
             }
         );
         var notificationType = notificationTypes.FirstOrDefault();
@@ -115,13 +115,13 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// Connect multiple Notifications records to NotificationType
     /// </summary>
     public async Task ConnectNotifications(
-        NotificationTypeIdDto idDto,
-        NotificationIdDto[] notificationsId
+        NotificationTypeWhereUniqueInput uniqueId,
+        NotificationWhereUniqueInput[] notificationsId
     )
     {
         var notificationType = await _context
             .NotificationTypes.Include(x => x.Notifications)
-            .FirstOrDefaultAsync(x => x.Id == idDto.Id);
+            .FirstOrDefaultAsync(x => x.Id == uniqueId.Id);
         if (notificationType == null)
         {
             throw new NotFoundException();
@@ -149,13 +149,13 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// Disconnect multiple Notifications records from NotificationType
     /// </summary>
     public async Task DisconnectNotifications(
-        NotificationTypeIdDto idDto,
-        NotificationIdDto[] notificationsId
+        NotificationTypeWhereUniqueInput uniqueId,
+        NotificationWhereUniqueInput[] notificationsId
     )
     {
         var notificationType = await _context
             .NotificationTypes.Include(x => x.Notifications)
-            .FirstOrDefaultAsync(x => x.Id == idDto.Id);
+            .FirstOrDefaultAsync(x => x.Id == uniqueId.Id);
         if (notificationType == null)
         {
             throw new NotFoundException();
@@ -175,17 +175,17 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// <summary>
     /// Find multiple Notifications records for NotificationType
     /// </summary>
-    public async Task<List<NotificationDto>> FindNotifications(
-        NotificationTypeIdDto idDto,
-        NotificationFindMany notificationTypeFindMany
+    public async Task<List<Notification>> FindNotifications(
+        NotificationTypeWhereUniqueInput uniqueId,
+        NotificationFindManyArgs notificationTypeFindManyArgs
     )
     {
         var notifications = await _context
-            .Notifications.Where(m => m.NotificationTypeId == idDto.Id)
-            .ApplyWhere(notificationTypeFindMany.Where)
-            .ApplySkip(notificationTypeFindMany.Skip)
-            .ApplyTake(notificationTypeFindMany.Take)
-            .ApplyOrderBy(notificationTypeFindMany.SortBy)
+            .Notifications.Where(m => m.NotificationTypeId == uniqueId.Id)
+            .ApplyWhere(notificationTypeFindManyArgs.Where)
+            .ApplySkip(notificationTypeFindManyArgs.Skip)
+            .ApplyTake(notificationTypeFindManyArgs.Take)
+            .ApplyOrderBy(notificationTypeFindManyArgs.SortBy)
             .ToListAsync();
 
         return notifications.Select(x => x.ToDto()).ToList();
@@ -194,7 +194,7 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// <summary>
     /// Meta data about NotificationType records
     /// </summary>
-    public async Task<MetadataDto> NotificationTypesMeta(NotificationTypeFindMany findManyArgs)
+    public async Task<MetadataDto> NotificationTypesMeta(NotificationTypeFindManyArgs findManyArgs)
     {
         var count = await _context.NotificationTypes.ApplyWhere(findManyArgs.Where).CountAsync();
 
@@ -205,13 +205,13 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// Update multiple Notifications records for NotificationType
     /// </summary>
     public async Task UpdateNotifications(
-        NotificationTypeIdDto idDto,
-        NotificationIdDto[] notificationsId
+        NotificationTypeWhereUniqueInput uniqueId,
+        NotificationWhereUniqueInput[] notificationsId
     )
     {
         var notificationType = await _context
             .NotificationTypes.Include(t => t.Notifications)
-            .FirstOrDefaultAsync(x => x.Id == idDto.Id);
+            .FirstOrDefaultAsync(x => x.Id == uniqueId.Id);
         if (notificationType == null)
         {
             throw new NotFoundException();
@@ -234,17 +234,17 @@ public abstract class NotificationTypesServiceBase : INotificationTypesService
     /// Update one NotificationType
     /// </summary>
     public async Task UpdateNotificationType(
-        NotificationTypeIdDto idDto,
+        NotificationTypeWhereUniqueInput uniqueId,
         NotificationTypeUpdateInput updateDto
     )
     {
-        var notificationType = updateDto.ToModel(idDto);
+        var notificationType = updateDto.ToModel(uniqueId);
 
         if (updateDto.Notifications != null)
         {
             notificationType.Notifications = await _context
                 .Notifications.Where(notification =>
-                    updateDto.Notifications.Select(t => t.Id).Contains(notification.Id)
+                    updateDto.Notifications.Select(t => t).Contains(notification.Id)
                 )
                 .ToListAsync();
         }

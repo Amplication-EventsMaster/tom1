@@ -5,47 +5,37 @@ namespace NotificationService.APIs.Extensions;
 
 public static class UsersExtensions
 {
-    public static UserDto ToDto(this User model)
+    public static User ToDto(this UserDbModel model)
     {
-        return new UserDto
+        return new User
         {
-            CreatedAt = model.CreatedAt,
-            Email = model.Email,
-            FirstName = model.FirstName,
             Id = model.Id,
+            CreatedAt = model.CreatedAt,
+            UpdatedAt = model.UpdatedAt,
+            FirstName = model.FirstName,
             LastName = model.LastName,
+            Username = model.Username,
+            Email = model.Email,
             Password = model.Password,
             Roles = model.Roles,
-            UpdatedAt = model.UpdatedAt,
-            Username = model.Username,
-            UserNotifications = model
-                .UserNotifications?.Select(x => new UserNotificationIdDto { Id = x.Id })
-                .ToList(),
+            UserNotifications = model.UserNotifications?.Select(x => x.Id).ToList(),
         };
     }
 
-    public static User ToModel(this UserUpdateInput updateDto, UserIdDto idDto)
+    public static UserDbModel ToModel(this UserUpdateInput updateDto, UserWhereUniqueInput uniqueId)
     {
-        var user = new User
+        var user = new UserDbModel
         {
-            Id = idDto.Id,
-            Email = updateDto.Email,
+            Id = uniqueId.Id,
             FirstName = updateDto.FirstName,
-            LastName = updateDto.LastName
+            LastName = updateDto.LastName,
+            Email = updateDto.Email
         };
 
         // map required fields
         if (updateDto.CreatedAt != null)
         {
             user.CreatedAt = updateDto.CreatedAt.Value;
-        }
-        if (updateDto.Password != null)
-        {
-            user.Password = updateDto.Password;
-        }
-        if (updateDto.Roles != null)
-        {
-            user.Roles = updateDto.Roles;
         }
         if (updateDto.UpdatedAt != null)
         {
@@ -54,6 +44,14 @@ public static class UsersExtensions
         if (updateDto.Username != null)
         {
             user.Username = updateDto.Username;
+        }
+        if (updateDto.Password != null)
+        {
+            user.Password = updateDto.Password;
+        }
+        if (updateDto.Roles != null)
+        {
+            user.Roles = updateDto.Roles;
         }
 
         return user;

@@ -1,6 +1,6 @@
 namespace NotificationService.APIs.Dtos;
 
-public class UserNotificationIdDto
+public class NotificationTypeWhereUniqueInput
 {
     public string Id { get; set; }
 }

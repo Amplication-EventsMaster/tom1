@@ -21,11 +21,11 @@ public abstract class UserNotificationsServiceBase : IUserNotificationsService
     /// <summary>
     /// Create one UserNotification
     /// </summary>
-    public async Task<UserNotificationDto> CreateUserNotification(
+    public async Task<UserNotification> CreateUserNotification(
         UserNotificationCreateInput createDto
     )
     {
-        var userNotification = new UserNotification
+        var userNotification = new UserNotificationDbModel
         {
             CreatedAt = createDto.CreatedAt,
             UpdatedAt = createDto.UpdatedAt
@@ -52,7 +52,7 @@ public abstract class UserNotificationsServiceBase : IUserNotificationsService
         _context.UserNotifications.Add(userNotification);
         await _context.SaveChangesAsync();
 
-        var result = await _context.FindAsync<UserNotification>(userNotification.Id);
+        var result = await _context.FindAsync<UserNotificationDbModel>(userNotification.Id);
 
         if (result == null)
         {
@@ -65,9 +65,9 @@ public abstract class UserNotificationsServiceBase : IUserNotificationsService
     /// <summary>
     /// Delete one UserNotification
     /// </summary>
-    public async Task DeleteUserNotification(UserNotificationIdDto idDto)
+    public async Task DeleteUserNotification(UserNotificationWhereUniqueInput uniqueId)
     {
-        var userNotification = await _context.UserNotifications.FindAsync(idDto.Id);
+        var userNotification = await _context.UserNotifications.FindAsync(uniqueId.Id);
         if (userNotification == null)
         {
             throw new NotFoundException();
@@ -80,8 +80,8 @@ public abstract class UserNotificationsServiceBase : IUserNotificationsService
     /// <summary>
     /// Find many UserNotifications
     /// </summary>
-    public async Task<List<UserNotificationDto>> UserNotifications(
-        UserNotificationFindMany findManyArgs
+    public async Task<List<UserNotification>> UserNotifications(
+        UserNotificationFindManyArgs findManyArgs
     )
     {
         var userNotifications = await _context
@@ -98,12 +98,12 @@ public abstract class UserNotificationsServiceBase : IUserNotificationsService
     /// <summary>
     /// Get one UserNotification
     /// </summary>
-    public async Task<UserNotificationDto> UserNotification(UserNotificationIdDto idDto)
+    public async Task<UserNotification> UserNotification(UserNotificationWhereUniqueInput uniqueId)
     {
         var userNotifications = await this.UserNotifications(
-            new UserNotificationFindMany
+            new UserNotificationFindManyArgs
             {
-                Where = new UserNotificationWhereInput { Id = idDto.Id }
+                Where = new UserNotificationWhereInput { Id = uniqueId.Id }
             }
         );
         var userNotification = userNotifications.FirstOrDefault();
@@ -119,11 +119,11 @@ public abstract class UserNotificationsServiceBase : IUserNotificationsService
     /// Update one UserNotification
     /// </summary>
     public async Task UpdateUserNotification(
-        UserNotificationIdDto idDto,
+        UserNotificationWhereUniqueInput uniqueId,
         UserNotificationUpdateInput updateDto
     )
     {
-        var userNotification = updateDto.ToModel(idDto);
+        var userNotification = updateDto.ToModel(uniqueId);
 
         _context.Entry(userNotification).State = EntityState.Modified;
 
@@ -147,10 +147,10 @@ public abstract class UserNotificationsServiceBase : IUserNotificationsService
     /// <summary>
     /// Get a Notification record for UserNotification
     /// </summary>
-    public async Task<NotificationDto> GetNotification(UserNotificationIdDto idDto)
+    public async Task<Notification> GetNotification(UserNotificationWhereUniqueInput uniqueId)
     {
         var userNotification = await _context
-            .UserNotifications.Where(userNotification => userNotification.Id == idDto.Id)
+            .UserNotifications.Where(userNotification => userNotification.Id == uniqueId.Id)
             .Include(userNotification => userNotification.Notification)
             .FirstOrDefaultAsync();
         if (userNotification == null)
@@ -163,10 +163,10 @@ public abstract class UserNotificationsServiceBase : IUserNotificationsService
     /// <summary>
     /// Get a User record for UserNotification
     /// </summary>
-    public async Task<UserDto> GetUser(UserNotificationIdDto idDto)
+    public async Task<User> GetUser(UserNotificationWhereUniqueInput uniqueId)
     {
         var userNotification = await _context
-            .UserNotifications.Where(userNotification => userNotification.Id == idDto.Id)
+            .UserNotifications.Where(userNotification => userNotification.Id == uniqueId.Id)
             .Include(userNotification => userNotification.User)
             .FirstOrDefaultAsync();
         if (userNotification == null)
@@ -179,7 +179,7 @@ public abstract class UserNotificationsServiceBase : IUserNotificationsService
     /// <summary>
     /// Meta data about UserNotification records
     /// </summary>
-    public async Task<MetadataDto> UserNotificationsMeta(UserNotificationFindMany findManyArgs)
+    public async Task<MetadataDto> UserNotificationsMeta(UserNotificationFindManyArgs findManyArgs)
     {
         var count = await _context.UserNotifications.ApplyWhere(findManyArgs.Where).CountAsync();
 

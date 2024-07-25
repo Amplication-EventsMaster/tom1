@@ -21,7 +21,7 @@ public abstract class UserNotificationsControllerBase : ControllerBase
     /// Create one UserNotification
     /// </summary>
     [HttpPost()]
-    public async Task<ActionResult<UserNotificationDto>> CreateUserNotification(
+    public async Task<ActionResult<UserNotification>> CreateUserNotification(
         UserNotificationCreateInput input
     )
     {
@@ -39,12 +39,12 @@ public abstract class UserNotificationsControllerBase : ControllerBase
     /// </summary>
     [HttpDelete("{Id}")]
     public async Task<ActionResult> DeleteUserNotification(
-        [FromRoute()] UserNotificationIdDto idDto
+        [FromRoute()] UserNotificationWhereUniqueInput uniqueId
     )
     {
         try
         {
-            await _service.DeleteUserNotification(idDto);
+            await _service.DeleteUserNotification(uniqueId);
         }
         catch (NotFoundException)
         {
@@ -58,8 +58,8 @@ public abstract class UserNotificationsControllerBase : ControllerBase
     /// Find many UserNotifications
     /// </summary>
     [HttpGet()]
-    public async Task<ActionResult<List<UserNotificationDto>>> UserNotifications(
-        [FromQuery()] UserNotificationFindMany filter
+    public async Task<ActionResult<List<UserNotification>>> UserNotifications(
+        [FromQuery()] UserNotificationFindManyArgs filter
     )
     {
         return Ok(await _service.UserNotifications(filter));
@@ -69,13 +69,13 @@ public abstract class UserNotificationsControllerBase : ControllerBase
     /// Get one UserNotification
     /// </summary>
     [HttpGet("{Id}")]
-    public async Task<ActionResult<UserNotificationDto>> UserNotification(
-        [FromRoute()] UserNotificationIdDto idDto
+    public async Task<ActionResult<UserNotification>> UserNotification(
+        [FromRoute()] UserNotificationWhereUniqueInput uniqueId
     )
     {
         try
         {
-            return await _service.UserNotification(idDto);
+            return await _service.UserNotification(uniqueId);
         }
         catch (NotFoundException)
         {
@@ -88,13 +88,13 @@ public abstract class UserNotificationsControllerBase : ControllerBase
     /// </summary>
     [HttpPatch("{Id}")]
     public async Task<ActionResult> UpdateUserNotification(
-        [FromRoute()] UserNotificationIdDto idDto,
+        [FromRoute()] UserNotificationWhereUniqueInput uniqueId,
         [FromQuery()] UserNotificationUpdateInput userNotificationUpdateDto
     )
     {
         try
         {
-            await _service.UpdateUserNotification(idDto, userNotificationUpdateDto);
+            await _service.UpdateUserNotification(uniqueId, userNotificationUpdateDto);
         }
         catch (NotFoundException)
         {
@@ -108,11 +108,11 @@ public abstract class UserNotificationsControllerBase : ControllerBase
     /// Get a Notification record for UserNotification
     /// </summary>
     [HttpGet("{Id}/notifications")]
-    public async Task<ActionResult<List<NotificationDto>>> GetNotification(
-        [FromRoute()] UserNotificationIdDto idDto
+    public async Task<ActionResult<List<Notification>>> GetNotification(
+        [FromRoute()] UserNotificationWhereUniqueInput uniqueId
     )
     {
-        var notification = await _service.GetNotification(idDto);
+        var notification = await _service.GetNotification(uniqueId);
         return Ok(notification);
     }
 
@@ -120,11 +120,11 @@ public abstract class UserNotificationsControllerBase : ControllerBase
     /// Get a User record for UserNotification
     /// </summary>
     [HttpGet("{Id}/users")]
-    public async Task<ActionResult<List<UserDto>>> GetUser(
-        [FromRoute()] UserNotificationIdDto idDto
+    public async Task<ActionResult<List<User>>> GetUser(
+        [FromRoute()] UserNotificationWhereUniqueInput uniqueId
     )
     {
-        var user = await _service.GetUser(idDto);
+        var user = await _service.GetUser(uniqueId);
         return Ok(user);
     }
 
@@ -133,7 +133,7 @@ public abstract class UserNotificationsControllerBase : ControllerBase
     /// </summary>
     [HttpPost("meta")]
     public async Task<ActionResult<MetadataDto>> UserNotificationsMeta(
-        [FromQuery()] UserNotificationFindMany filter
+        [FromQuery()] UserNotificationFindManyArgs filter
     )
     {
         return Ok(await _service.UserNotificationsMeta(filter));

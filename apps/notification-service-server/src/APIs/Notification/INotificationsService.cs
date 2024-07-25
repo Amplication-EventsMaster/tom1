@@ -8,67 +8,70 @@ public interface INotificationsService
     /// <summary>
     /// Create one Notification
     /// </summary>
-    public Task<NotificationDto> CreateNotification(NotificationCreateInput notificationDto);
+    public Task<Notification> CreateNotification(NotificationCreateInput notification);
 
     /// <summary>
     /// Delete one Notification
     /// </summary>
-    public Task DeleteNotification(NotificationIdDto idDto);
+    public Task DeleteNotification(NotificationWhereUniqueInput uniqueId);
 
     /// <summary>
     /// Find many Notifications
     /// </summary>
-    public Task<List<NotificationDto>> Notifications(NotificationFindMany findManyArgs);
+    public Task<List<Notification>> Notifications(NotificationFindManyArgs findManyArgs);
 
     /// <summary>
     /// Get one Notification
     /// </summary>
-    public Task<NotificationDto> Notification(NotificationIdDto idDto);
+    public Task<Notification> Notification(NotificationWhereUniqueInput uniqueId);
 
     /// <summary>
     /// Connect multiple UserNotifications records to Notification
     /// </summary>
     public Task ConnectUserNotifications(
-        NotificationIdDto idDto,
-        UserNotificationIdDto[] userNotificationsId
+        NotificationWhereUniqueInput uniqueId,
+        UserNotificationWhereUniqueInput[] userNotificationsId
     );
 
     /// <summary>
     /// Disconnect multiple UserNotifications records from Notification
     /// </summary>
     public Task DisconnectUserNotifications(
-        NotificationIdDto idDto,
-        UserNotificationIdDto[] userNotificationsId
+        NotificationWhereUniqueInput uniqueId,
+        UserNotificationWhereUniqueInput[] userNotificationsId
     );
 
     /// <summary>
     /// Find multiple UserNotifications records for Notification
     /// </summary>
-    public Task<List<UserNotificationDto>> FindUserNotifications(
-        NotificationIdDto idDto,
-        UserNotificationFindMany UserNotificationFindMany
+    public Task<List<UserNotification>> FindUserNotifications(
+        NotificationWhereUniqueInput uniqueId,
+        UserNotificationFindManyArgs UserNotificationFindManyArgs
     );
 
     /// <summary>
     /// Get a NotificationType record for Notification
     /// </summary>
-    public Task<NotificationTypeDto> GetNotificationType(NotificationIdDto idDto);
+    public Task<NotificationType> GetNotificationType(NotificationWhereUniqueInput uniqueId);
 
     /// <summary>
     /// Meta data about Notification records
     /// </summary>
-    public Task<MetadataDto> NotificationsMeta(NotificationFindMany findManyArgs);
+    public Task<MetadataDto> NotificationsMeta(NotificationFindManyArgs findManyArgs);
 
     /// <summary>
     /// Update multiple UserNotifications records for Notification
     /// </summary>
     public Task UpdateUserNotifications(
-        NotificationIdDto idDto,
-        UserNotificationIdDto[] userNotificationsId
+        NotificationWhereUniqueInput uniqueId,
+        UserNotificationWhereUniqueInput[] userNotificationsId
     );
 
     /// <summary>
     /// Update one Notification
     /// </summary>
-    public Task UpdateNotification(NotificationIdDto idDto, NotificationUpdateInput updateDto);
+    public Task UpdateNotification(
+        NotificationWhereUniqueInput uniqueId,
+        NotificationUpdateInput updateDto
+    );
 }

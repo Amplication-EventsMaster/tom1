@@ -8,62 +8,62 @@ public interface IUsersService
     /// <summary>
     /// Create one User
     /// </summary>
-    public Task<UserDto> CreateUser(UserCreateInput userDto);
+    public Task<User> CreateUser(UserCreateInput user);
 
     /// <summary>
     /// Delete one User
     /// </summary>
-    public Task DeleteUser(UserIdDto idDto);
+    public Task DeleteUser(UserWhereUniqueInput uniqueId);
 
     /// <summary>
     /// Find many Users
     /// </summary>
-    public Task<List<UserDto>> Users(UserFindMany findManyArgs);
+    public Task<List<User>> Users(UserFindManyArgs findManyArgs);
 
     /// <summary>
     /// Get one User
     /// </summary>
-    public Task<UserDto> User(UserIdDto idDto);
+    public Task<User> User(UserWhereUniqueInput uniqueId);
 
     /// <summary>
     /// Update one User
     /// </summary>
-    public Task UpdateUser(UserIdDto idDto, UserUpdateInput updateDto);
+    public Task UpdateUser(UserWhereUniqueInput uniqueId, UserUpdateInput updateDto);
 
     /// <summary>
     /// Connect multiple UserNotifications records to User
     /// </summary>
     public Task ConnectUserNotifications(
-        UserIdDto idDto,
-        UserNotificationIdDto[] userNotificationsId
+        UserWhereUniqueInput uniqueId,
+        UserNotificationWhereUniqueInput[] userNotificationsId
     );
 
     /// <summary>
     /// Disconnect multiple UserNotifications records from User
     /// </summary>
     public Task DisconnectUserNotifications(
-        UserIdDto idDto,
-        UserNotificationIdDto[] userNotificationsId
+        UserWhereUniqueInput uniqueId,
+        UserNotificationWhereUniqueInput[] userNotificationsId
     );
 
     /// <summary>
     /// Find multiple UserNotifications records for User
     /// </summary>
-    public Task<List<UserNotificationDto>> FindUserNotifications(
-        UserIdDto idDto,
-        UserNotificationFindMany UserNotificationFindMany
+    public Task<List<UserNotification>> FindUserNotifications(
+        UserWhereUniqueInput uniqueId,
+        UserNotificationFindManyArgs UserNotificationFindManyArgs
     );
 
     /// <summary>
     /// Meta data about User records
     /// </summary>
-    public Task<MetadataDto> UsersMeta(UserFindMany findManyArgs);
+    public Task<MetadataDto> UsersMeta(UserFindManyArgs findManyArgs);
 
     /// <summary>
     /// Update multiple UserNotifications records for User
     /// </summary>
     public Task UpdateUserNotifications(
-        UserIdDto idDto,
-        UserNotificationIdDto[] userNotificationsId
+        UserWhereUniqueInput uniqueId,
+        UserNotificationWhereUniqueInput[] userNotificationsId
     );
 }

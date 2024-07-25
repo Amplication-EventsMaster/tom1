@@ -21,7 +21,7 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// Create one NotificationType
     /// </summary>
     [HttpPost()]
-    public async Task<ActionResult<NotificationTypeDto>> CreateNotificationType(
+    public async Task<ActionResult<NotificationType>> CreateNotificationType(
         NotificationTypeCreateInput input
     )
     {
@@ -39,12 +39,12 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// </summary>
     [HttpDelete("{Id}")]
     public async Task<ActionResult> DeleteNotificationType(
-        [FromRoute()] NotificationTypeIdDto idDto
+        [FromRoute()] NotificationTypeWhereUniqueInput uniqueId
     )
     {
         try
         {
-            await _service.DeleteNotificationType(idDto);
+            await _service.DeleteNotificationType(uniqueId);
         }
         catch (NotFoundException)
         {
@@ -58,8 +58,8 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// Find many NotificationTypes
     /// </summary>
     [HttpGet()]
-    public async Task<ActionResult<List<NotificationTypeDto>>> NotificationTypes(
-        [FromQuery()] NotificationTypeFindMany filter
+    public async Task<ActionResult<List<NotificationType>>> NotificationTypes(
+        [FromQuery()] NotificationTypeFindManyArgs filter
     )
     {
         return Ok(await _service.NotificationTypes(filter));
@@ -69,13 +69,13 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// Get one NotificationType
     /// </summary>
     [HttpGet("{Id}")]
-    public async Task<ActionResult<NotificationTypeDto>> NotificationType(
-        [FromRoute()] NotificationTypeIdDto idDto
+    public async Task<ActionResult<NotificationType>> NotificationType(
+        [FromRoute()] NotificationTypeWhereUniqueInput uniqueId
     )
     {
         try
         {
-            return await _service.NotificationType(idDto);
+            return await _service.NotificationType(uniqueId);
         }
         catch (NotFoundException)
         {
@@ -88,13 +88,13 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// </summary>
     [HttpPost("{Id}/notifications")]
     public async Task<ActionResult> ConnectNotifications(
-        [FromRoute()] NotificationTypeIdDto idDto,
-        [FromQuery()] NotificationIdDto[] notificationsId
+        [FromRoute()] NotificationTypeWhereUniqueInput uniqueId,
+        [FromQuery()] NotificationWhereUniqueInput[] notificationsId
     )
     {
         try
         {
-            await _service.ConnectNotifications(idDto, notificationsId);
+            await _service.ConnectNotifications(uniqueId, notificationsId);
         }
         catch (NotFoundException)
         {
@@ -109,13 +109,13 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// </summary>
     [HttpDelete("{Id}/notifications")]
     public async Task<ActionResult> DisconnectNotifications(
-        [FromRoute()] NotificationTypeIdDto idDto,
-        [FromBody()] NotificationIdDto[] notificationsId
+        [FromRoute()] NotificationTypeWhereUniqueInput uniqueId,
+        [FromBody()] NotificationWhereUniqueInput[] notificationsId
     )
     {
         try
         {
-            await _service.DisconnectNotifications(idDto, notificationsId);
+            await _service.DisconnectNotifications(uniqueId, notificationsId);
         }
         catch (NotFoundException)
         {
@@ -129,14 +129,14 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// Find multiple Notifications records for NotificationType
     /// </summary>
     [HttpGet("{Id}/notifications")]
-    public async Task<ActionResult<List<NotificationDto>>> FindNotifications(
-        [FromRoute()] NotificationTypeIdDto idDto,
-        [FromQuery()] NotificationFindMany filter
+    public async Task<ActionResult<List<Notification>>> FindNotifications(
+        [FromRoute()] NotificationTypeWhereUniqueInput uniqueId,
+        [FromQuery()] NotificationFindManyArgs filter
     )
     {
         try
         {
-            return Ok(await _service.FindNotifications(idDto, filter));
+            return Ok(await _service.FindNotifications(uniqueId, filter));
         }
         catch (NotFoundException)
         {
@@ -149,7 +149,7 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// </summary>
     [HttpPost("meta")]
     public async Task<ActionResult<MetadataDto>> NotificationTypesMeta(
-        [FromQuery()] NotificationTypeFindMany filter
+        [FromQuery()] NotificationTypeFindManyArgs filter
     )
     {
         return Ok(await _service.NotificationTypesMeta(filter));
@@ -160,13 +160,13 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// </summary>
     [HttpPatch("{Id}/notifications")]
     public async Task<ActionResult> UpdateNotifications(
-        [FromRoute()] NotificationTypeIdDto idDto,
-        [FromBody()] NotificationIdDto[] notificationsId
+        [FromRoute()] NotificationTypeWhereUniqueInput uniqueId,
+        [FromBody()] NotificationWhereUniqueInput[] notificationsId
     )
     {
         try
         {
-            await _service.UpdateNotifications(idDto, notificationsId);
+            await _service.UpdateNotifications(uniqueId, notificationsId);
         }
         catch (NotFoundException)
         {
@@ -181,13 +181,13 @@ public abstract class NotificationTypesControllerBase : ControllerBase
     /// </summary>
     [HttpPatch("{Id}")]
     public async Task<ActionResult> UpdateNotificationType(
-        [FromRoute()] NotificationTypeIdDto idDto,
+        [FromRoute()] NotificationTypeWhereUniqueInput uniqueId,
         [FromQuery()] NotificationTypeUpdateInput notificationTypeUpdateDto
     )
     {
         try
         {
-            await _service.UpdateNotificationType(idDto, notificationTypeUpdateDto);
+            await _service.UpdateNotificationType(uniqueId, notificationTypeUpdateDto);
         }
         catch (NotFoundException)
         {

@@ -5,31 +5,29 @@ namespace NotificationService.APIs.Extensions;
 
 public static class NotificationTypesExtensions
 {
-    public static NotificationTypeDto ToDto(this NotificationType model)
+    public static NotificationType ToDto(this NotificationTypeDbModel model)
     {
-        return new NotificationTypeDto
+        return new NotificationType
         {
-            CreatedAt = model.CreatedAt,
-            Description = model.Description,
             Id = model.Id,
-            Name = model.Name,
-            Notifications = model
-                .Notifications?.Select(x => new NotificationIdDto { Id = x.Id })
-                .ToList(),
+            CreatedAt = model.CreatedAt,
             UpdatedAt = model.UpdatedAt,
+            Name = model.Name,
+            Description = model.Description,
+            Notifications = model.Notifications?.Select(x => x.Id).ToList(),
         };
     }
 
-    public static NotificationType ToModel(
+    public static NotificationTypeDbModel ToModel(
         this NotificationTypeUpdateInput updateDto,
-        NotificationTypeIdDto idDto
+        NotificationTypeWhereUniqueInput uniqueId
     )
     {
-        var notificationType = new NotificationType
+        var notificationType = new NotificationTypeDbModel
         {
-            Id = idDto.Id,
-            Description = updateDto.Description,
-            Name = updateDto.Name
+            Id = uniqueId.Id,
+            Name = updateDto.Name,
+            Description = updateDto.Description
         };
 
         // map required fields

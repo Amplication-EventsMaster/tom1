@@ -4,22 +4,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace NotificationService.Infrastructure.Models;
 
 [Table("Users")]
-public class User
+public class UserDbModel
 {
-    [Required()]
-    public DateTime CreatedAt { get; set; }
-
-    public string? Email { get; set; }
-
-    [StringLength(256)]
-    public string? FirstName { get; set; }
-
     [Key()]
     [Required()]
     public string Id { get; set; }
 
+    [Required()]
+    public DateTime CreatedAt { get; set; }
+
+    [Required()]
+    public DateTime UpdatedAt { get; set; }
+
+    [StringLength(256)]
+    public string? FirstName { get; set; }
+
     [StringLength(256)]
     public string? LastName { get; set; }
+
+    [Required()]
+    public string Username { get; set; }
+
+    public string? Email { get; set; }
 
     [Required()]
     public string Password { get; set; }
@@ -27,11 +33,6 @@ public class User
     [Required()]
     public string Roles { get; set; }
 
-    [Required()]
-    public DateTime UpdatedAt { get; set; }
-
-    [Required()]
-    public string Username { get; set; }
-
-    public List<UserNotification>? UserNotifications { get; set; } = new List<UserNotification>();
+    public List<UserNotificationDbModel>? UserNotifications { get; set; } =
+        new List<UserNotificationDbModel>();
 }
