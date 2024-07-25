@@ -1,9 +1,9 @@
 import { Customer } from "../customer/Customer";
 
 export type Event = {
-  createdAt: Date;
-  customer?: Customer | null;
-  date: Date | null;
   id: string;
+  createdAt: Date;
   updatedAt: Date;
+  date: Date | null;
+  customer?: Customer | null;
 };

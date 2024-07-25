@@ -11,40 +11,12 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, ValidateNested, IsOptional, IsString } from "class-validator";
+import { IsString, IsDate, IsOptional, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { Customer } from "../../customer/base/Customer";
 
 @ObjectType()
 class Event {
-  @ApiProperty({
-    required: true,
-  })
-  @IsDate()
-  @Type(() => Date)
-  @Field(() => Date)
-  createdAt!: Date;
-
-  @ApiProperty({
-    required: false,
-    type: () => Customer,
-  })
-  @ValidateNested()
-  @Type(() => Customer)
-  @IsOptional()
-  customer?: Customer | null;
-
-  @ApiProperty({
-    required: false,
-  })
-  @IsDate()
-  @Type(() => Date)
-  @IsOptional()
-  @Field(() => Date, {
-    nullable: true,
-  })
-  date!: Date | null;
-
   @ApiProperty({
     required: true,
     type: String,
@@ -59,7 +31,35 @@ class Event {
   @IsDate()
   @Type(() => Date)
   @Field(() => Date)
+  createdAt!: Date;
+
+  @ApiProperty({
+    required: true,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @Field(() => Date)
   updatedAt!: Date;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  date!: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => Customer,
+  })
+  @ValidateNested()
+  @Type(() => Customer)
+  @IsOptional()
+  customer?: Customer | null;
 }
 
 export { Event as Event };

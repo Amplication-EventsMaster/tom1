@@ -1,9 +1,9 @@
 import { SortOrder } from "../../util/SortOrder";
 
 export type EventOrderByInput = {
-  createdAt?: SortOrder;
-  customerId?: SortOrder;
-  date?: SortOrder;
   id?: SortOrder;
+  createdAt?: SortOrder;
   updatedAt?: SortOrder;
+  date?: SortOrder;
+  customerId?: SortOrder;
 };

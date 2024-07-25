@@ -1,9 +1,9 @@
-import { CustomerWhereUniqueInput } from "../customer/CustomerWhereUniqueInput";
-import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
+import { CustomerWhereUniqueInput } from "../customer/CustomerWhereUniqueInput";
 
 export type EventWhereInput = {
-  customer?: CustomerWhereUniqueInput;
-  date?: DateTimeNullableFilter;
   id?: StringFilter;
+  date?: DateTimeNullableFilter;
+  customer?: CustomerWhereUniqueInput;
 };

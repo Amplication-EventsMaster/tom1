@@ -11,25 +11,24 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { CustomerWhereUniqueInput } from "../../customer/base/CustomerWhereUniqueInput";
-import { ValidateNested, IsOptional } from "class-validator";
-import { Type } from "class-transformer";
-import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { Type } from "class-transformer";
+import { IsOptional, ValidateNested } from "class-validator";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
+import { CustomerWhereUniqueInput } from "../../customer/base/CustomerWhereUniqueInput";
 
 @InputType()
 class EventWhereInput {
   @ApiProperty({
     required: false,
-    type: () => CustomerWhereUniqueInput,
+    type: StringFilter,
   })
-  @ValidateNested()
-  @Type(() => CustomerWhereUniqueInput)
+  @Type(() => StringFilter)
   @IsOptional()
-  @Field(() => CustomerWhereUniqueInput, {
+  @Field(() => StringFilter, {
     nullable: true,
   })
-  customer?: CustomerWhereUniqueInput;
+  id?: StringFilter;
 
   @ApiProperty({
     required: false,
@@ -44,14 +43,15 @@ class EventWhereInput {
 
   @ApiProperty({
     required: false,
-    type: StringFilter,
+    type: () => CustomerWhereUniqueInput,
   })
-  @Type(() => StringFilter)
+  @ValidateNested()
+  @Type(() => CustomerWhereUniqueInput)
   @IsOptional()
-  @Field(() => StringFilter, {
+  @Field(() => CustomerWhereUniqueInput, {
     nullable: true,
   })
-  id?: StringFilter;
+  customer?: CustomerWhereUniqueInput;
 }
 
 export { EventWhereInput as EventWhereInput };
