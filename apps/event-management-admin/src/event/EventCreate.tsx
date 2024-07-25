@@ -4,9 +4,9 @@ import {
   Create,
   SimpleForm,
   CreateProps,
+  DateTimeInput,
   ReferenceInput,
   SelectInput,
-  DateTimeInput,
 } from "react-admin";
 
 import { CustomerTitle } from "../customer/CustomerTitle";
@@ -15,6 +15,7 @@ export const EventCreate = (props: CreateProps): React.ReactElement => {
   return (
     <Create {...props}>
       <SimpleForm>
+        <DateTimeInput label="date" source="date" />
         <ReferenceInput
           source="customer.id"
           reference="Customer"
@@ -22,7 +23,6 @@ export const EventCreate = (props: CreateProps): React.ReactElement => {
         >
           <SelectInput optionText={CustomerTitle} />
         </ReferenceInput>
-        <DateTimeInput label="date" source="date" />
       </SimpleForm>
     </Create>
   );

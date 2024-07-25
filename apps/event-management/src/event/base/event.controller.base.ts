@@ -57,17 +57,16 @@ export class EventControllerBase {
           : undefined,
       },
       select: {
+        id: true,
         createdAt: true,
+        updatedAt: true,
+        date: true,
 
         customer: {
           select: {
             id: true,
           },
         },
-
-        date: true,
-        id: true,
-        updatedAt: true,
       },
     });
   }
@@ -89,17 +88,16 @@ export class EventControllerBase {
     return this.service.events({
       ...args,
       select: {
+        id: true,
         createdAt: true,
+        updatedAt: true,
+        date: true,
 
         customer: {
           select: {
             id: true,
           },
         },
-
-        date: true,
-        id: true,
-        updatedAt: true,
       },
     });
   }
@@ -122,17 +120,16 @@ export class EventControllerBase {
     const result = await this.service.event({
       where: params,
       select: {
+        id: true,
         createdAt: true,
+        updatedAt: true,
+        date: true,
 
         customer: {
           select: {
             id: true,
           },
         },
-
-        date: true,
-        id: true,
-        updatedAt: true,
       },
     });
     if (result === null) {
@@ -172,17 +169,16 @@ export class EventControllerBase {
             : undefined,
         },
         select: {
+          id: true,
           createdAt: true,
+          updatedAt: true,
+          date: true,
 
           customer: {
             select: {
               id: true,
             },
           },
-
-          date: true,
-          id: true,
-          updatedAt: true,
         },
       });
     } catch (error) {
@@ -213,17 +209,16 @@ export class EventControllerBase {
       return await this.service.deleteEvent({
         where: params,
         select: {
+          id: true,
           createdAt: true,
+          updatedAt: true,
+          date: true,
 
           customer: {
             select: {
               id: true,
             },
           },
-
-          date: true,
-          id: true,
-          updatedAt: true,
         },
       });
     } catch (error) {

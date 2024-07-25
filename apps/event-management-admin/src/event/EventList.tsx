@@ -3,9 +3,9 @@ import {
   List,
   Datagrid,
   ListProps,
+  TextField,
   DateField,
   ReferenceField,
-  TextField,
 } from "react-admin";
 import Pagination from "../Components/Pagination";
 import { CUSTOMER_TITLE_FIELD } from "../customer/CustomerTitle";
@@ -20,7 +20,10 @@ export const EventList = (props: ListProps): React.ReactElement => {
       pagination={<Pagination />}
     >
       <Datagrid rowClick="show">
+        <TextField label="ID" source="id" />
         <DateField source="createdAt" label="Created At" />
+        <DateField source="updatedAt" label="Updated At" />
+        <TextField label="date" source="date" />
         <ReferenceField
           label="customer"
           source="customer.id"
@@ -28,9 +31,6 @@ export const EventList = (props: ListProps): React.ReactElement => {
         >
           <TextField source={CUSTOMER_TITLE_FIELD} />
         </ReferenceField>
-        <TextField label="date" source="date" />
-        <TextField label="ID" source="id" />
-        <DateField source="updatedAt" label="Updated At" />
       </Datagrid>
     </List>
   );

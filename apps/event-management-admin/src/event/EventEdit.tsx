@@ -3,9 +3,9 @@ import {
   Edit,
   SimpleForm,
   EditProps,
+  DateTimeInput,
   ReferenceInput,
   SelectInput,
-  DateTimeInput,
 } from "react-admin";
 import { CustomerTitle } from "../customer/CustomerTitle";
 
@@ -13,6 +13,7 @@ export const EventEdit = (props: EditProps): React.ReactElement => {
   return (
     <Edit {...props}>
       <SimpleForm>
+        <DateTimeInput label="date" source="date" />
         <ReferenceInput
           source="customer.id"
           reference="Customer"
@@ -20,7 +21,6 @@ export const EventEdit = (props: EditProps): React.ReactElement => {
         >
           <SelectInput optionText={CustomerTitle} />
         </ReferenceInput>
-        <DateTimeInput label="date" source="date" />
       </SimpleForm>
     </Edit>
   );

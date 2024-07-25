@@ -18,38 +18,38 @@ import { CustomerService } from "../customer.service";
 const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
-  createdAt: new Date(),
-  firstName: "exampleFirstName",
   id: "exampleId",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  firstName: "exampleFirstName",
   lastName: "exampleLastName",
   phn: "examplePhn",
-  updatedAt: new Date(),
 };
 const CREATE_RESULT = {
-  createdAt: new Date(),
-  firstName: "exampleFirstName",
   id: "exampleId",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  firstName: "exampleFirstName",
   lastName: "exampleLastName",
   phn: "examplePhn",
-  updatedAt: new Date(),
 };
 const FIND_MANY_RESULT = [
   {
-    createdAt: new Date(),
-    firstName: "exampleFirstName",
     id: "exampleId",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    firstName: "exampleFirstName",
     lastName: "exampleLastName",
     phn: "examplePhn",
-    updatedAt: new Date(),
   },
 ];
 const FIND_ONE_RESULT = {
-  createdAt: new Date(),
-  firstName: "exampleFirstName",
   id: "exampleId",
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  firstName: "exampleFirstName",
   lastName: "exampleLastName",
   phn: "examplePhn",
-  updatedAt: new Date(),
 };
 
 const service = {

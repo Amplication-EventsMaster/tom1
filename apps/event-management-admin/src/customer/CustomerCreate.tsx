@@ -4,9 +4,9 @@ import {
   Create,
   SimpleForm,
   CreateProps,
+  TextInput,
   ReferenceArrayInput,
   SelectArrayInput,
-  TextInput,
 } from "react-admin";
 
 import { EventTitle } from "../event/EventTitle";
@@ -15,6 +15,9 @@ export const CustomerCreate = (props: CreateProps): React.ReactElement => {
   return (
     <Create {...props}>
       <SimpleForm>
+        <TextInput label="first name" source="firstName" />
+        <TextInput label="last name" source="lastName" />
+        <TextInput label="phn" source="phn" />
         <ReferenceArrayInput
           source="events"
           reference="Event"
@@ -23,9 +26,6 @@ export const CustomerCreate = (props: CreateProps): React.ReactElement => {
         >
           <SelectArrayInput optionText={EventTitle} />
         </ReferenceArrayInput>
-        <TextInput label="first name" source="firstName" />
-        <TextInput label="last name" source="lastName" />
-        <TextInput label="phn" source="phn" />
       </SimpleForm>
     </Create>
   );

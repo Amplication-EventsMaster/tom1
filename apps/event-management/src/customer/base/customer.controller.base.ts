@@ -54,12 +54,12 @@ export class CustomerControllerBase {
     return await this.service.createCustomer({
       data: data,
       select: {
-        createdAt: true,
-        firstName: true,
         id: true,
+        createdAt: true,
+        updatedAt: true,
+        firstName: true,
         lastName: true,
         phn: true,
-        updatedAt: true,
       },
     });
   }
@@ -81,12 +81,12 @@ export class CustomerControllerBase {
     return this.service.customers({
       ...args,
       select: {
-        createdAt: true,
-        firstName: true,
         id: true,
+        createdAt: true,
+        updatedAt: true,
+        firstName: true,
         lastName: true,
         phn: true,
-        updatedAt: true,
       },
     });
   }
@@ -109,12 +109,12 @@ export class CustomerControllerBase {
     const result = await this.service.customer({
       where: params,
       select: {
-        createdAt: true,
-        firstName: true,
         id: true,
+        createdAt: true,
+        updatedAt: true,
+        firstName: true,
         lastName: true,
         phn: true,
-        updatedAt: true,
       },
     });
     if (result === null) {
@@ -146,12 +146,12 @@ export class CustomerControllerBase {
         where: params,
         data: data,
         select: {
-          createdAt: true,
-          firstName: true,
           id: true,
+          createdAt: true,
+          updatedAt: true,
+          firstName: true,
           lastName: true,
           phn: true,
-          updatedAt: true,
         },
       });
     } catch (error) {
@@ -182,12 +182,12 @@ export class CustomerControllerBase {
       return await this.service.deleteCustomer({
         where: params,
         select: {
-          createdAt: true,
-          firstName: true,
           id: true,
+          createdAt: true,
+          updatedAt: true,
+          firstName: true,
           lastName: true,
           phn: true,
-          updatedAt: true,
         },
       });
     } catch (error) {
@@ -216,17 +216,16 @@ export class CustomerControllerBase {
     const results = await this.service.findEvents(params.id, {
       ...query,
       select: {
+        id: true,
         createdAt: true,
+        updatedAt: true,
+        date: true,
 
         customer: {
           select: {
             id: true,
           },
         },
-
-        date: true,
-        id: true,
-        updatedAt: true,
       },
     });
     if (results === null) {
